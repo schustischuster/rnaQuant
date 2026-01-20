@@ -42,7 +42,39 @@ plotRIN <- function(temp = c("56", "62"), ...) {
     message("Starting analysis...")
 
 
+    # Get average from replicates
+    
+    if (temp == "62") {
+        numb <- 2
+    } else if (temp == "56") {
+        numb <- 3
+    }
 
+
+    getRepl <- function(x) { 
+
+        split(x, 
+            rep(1:(nrow(x)/2), 
+                each = numb)
+            )
+    }
+
+    repl_lst <- getRepl(ts_data)
+
+
+    plt_df <- do.call(rbind, lapply(repl_lst, function(x) {
+
+        rna_mean <- sum(x[,3])/numb
+        rna_sd <- sd(x[,3])
+
+        rin_mean <- sum(x[,4])/numb
+        rin_sd <- sd(x[,4])
+
+        x_df <- data.frame(sample_type = gsub('.{2}$', '', x[2,2]), RNA_avg = rna_mean, 
+                           RNA_sd = rna_sd, RIN_avg = rin_mean, RIN_sd = rin_sd)
+        return(x_df)
+
+        }))
 
 
 
