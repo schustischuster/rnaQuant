@@ -78,6 +78,19 @@ plotRIN <- function(temp = c("56", "62"), ...) {
         }))
 
 
+    # Add color
+    if (numb == 2) {
+
+        col <- c('#2c8654', '#53b0db','#6a54a9' , '#fad819', '#f2a72f', '#96ba37')
+
+    } else if (numb == 3) {
+
+        col <- c('#2c8654', '#53b0db','#6a54a9' , '#fad819', '#f2a72f', '#96ba37', '#ee412e', '#e075af')
+    }
+
+    plt_df <- data.frame(plt_df, Col = col)
+
+
 
     # Plot data
     plotData <- function(df) {
@@ -86,7 +99,7 @@ plotRIN <- function(temp = c("56", "62"), ...) {
 
         if (temp == 62) {
 
-            plot_mar <- c(0.5, 0.5, 1, 1)
+            plot_mar <- c(0.8, 0.8, 0.5, 0.5)
             plt_title <- "GO enrichment global q1"
             df$sample_type <- gsub("Col-0_contro", "Col-0_snap", df$sample_type)
             df$sample_type <- gsub("EtOH_70%", "70% EtOH", df$sample_type)
@@ -94,34 +107,45 @@ plotRIN <- function(temp = c("56", "62"), ...) {
             df$sample_type <- gsub("Aceton_100%", "100% Aceton", df$sample_type)
             df$sample_type <- gsub("EtOH_Acetic Acid_3:1", "EtOH_AA_3:1", df$sample_type)
 
+            x_coord <- c(2, 3, 4, 5, 6, 7)
+            y_coord <- c(200, 300, 400, 500, 600, 700)
+            txt_lab <- c("Col-0_snap", "70% EtOH", "100% EtOH", "100% Aceton", "EtOH_AA_3:1", "FAA")
+
         } else if (temp == 56) {
 
-            plot_mar <- c(0.5, 0.5, 1, 1)
-            plt_title <- "GO enrichment global q1"
-
+            plot_mar <- c(0.8, 0.8, 0.5, 0.5)
         }
 
+        df$sample_type <- factor(df$sample_type)
 
         p <- ggplot(df, aes(x = RIN_avg, y = RNA_avg)) +
-        geom_point() + 
-        scale_x_continuous(expand = c(0, 0), limits = c(0, 10)) + 
-        labs(x = "RIN", y = "RNA concentration (ng)") + 
+        geom_point(aes(colour = Col, fill = Col), size = 14.5, shape = 20) + 
+        geom_errorbar(aes(ymin = RNA_avg - RNA_sd, ymax = RNA_avg + RNA_sd, colour = Col), 
+            width = 0.35, linewidth = 1.5, size = 0.5) +  
+        geom_errorbarh(aes(xmin = RIN_avg - RIN_sd, xmax = RIN_avg + RIN_sd, colour = Col), 
+            height = 62, linewidth = 1.5, size = 0.5) + 
+        scale_x_continuous(expand = c(0.025, 0), limits = c(0, 10), breaks = c(0, 2, 4, 6, 8, 10)) + 
+        scale_y_continuous(expand = c(0.025, 0), limits = c(0, 945), breaks = c(0, 200, 400, 600, 800, 1000)) + 
+        scale_color_manual(values = df$Col, breaks = df$Col) + 
+        labs(x = bquote(RIN^e), y = "RNA concentration (ng)") + 
+        annotate("text", x = x_coord, y = y_coord, label = txt_lab, colour = df$Col, size = 8) + 
         theme(panel.background = element_blank(), 
-            axis.ticks.length = unit(0.25, "cm"), 
-            axis.ticks = element_line(colour = "black", size = 1.0), 
-            axis.line = element_line(colour = 'black', size = 1.0), 
+            legend.position = "none", 
+            axis.ticks.length = unit(0.35, "cm"), 
+            axis.ticks = element_line(colour = "black", size = 1.1), 
+            axis.line = element_line(colour = 'black', size = 1.1), 
             plot.margin = unit(plot_mar, "cm"), 
-            plot.title = element_text(size = 22.75, margin = margin(t = 0, r = 0, b = 9, l = 0), hjust = 0.5),
-            axis.title.y = element_text(size = 22.75, margin = margin(t = 0, r = 7.0, b = 0, l = 10), 
+            plot.title = element_text(size = 22.0, margin = margin(t = 0, r = 0, b = 9, l = 0), hjust = 0.5),
+            axis.title.y = element_text(size = 20, margin = margin(t = 0, r = 0, b = 0, l = 2), 
                 colour = "black", face = "bold"), 
-            axis.title.x = element_text(size = 22.75, margin = margin(t = 0.5, r = 0, b = 8.15, l = 0), 
+            axis.title.x = element_text(size = 20, margin = margin(t = 0, r = 0, b = 0, l = 0), 
                 colour = "black", face = "bold"), 
-            axis.text.x = element_text(size = 18.8, margin = margin(t = 3.5, b = 7), colour = "grey20"), 
-            axis.text.y = element_text(size = 19.0, angle = 0, margin = margin(l = 10, r = -2), colour = "black")
+            axis.text.x = element_text(size = 18.5, margin = margin(t = 4, b = 4), colour = "black"), 
+            axis.text.y = element_text(size = 18.5, angle = 0, margin = margin(l = 8.5, r = 2.5), colour = "black")
         )
 
         ggsave(file = file.path(out_dir, "plots", fname), plot = p, 
-               width = 11.5, height = 6.5, dpi = 300, units = c("in"), limitsize = FALSE)
+               width = 8.75, height = 6.5, dpi = 300, units = c("in"), limitsize = FALSE)
 
 
     }
