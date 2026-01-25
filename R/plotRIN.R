@@ -101,14 +101,9 @@ plotRIN <- function(temp = c("56", "62"), ...) {
 
             plot_mar <- c(0.8, 0.8, 0.5, 0.5)
             plt_title <- "GO enrichment global q1"
-            df$sample_type <- gsub("Col-0_contro", "Col-0_snap", df$sample_type)
-            df$sample_type <- gsub("EtOH_70%", "70% EtOH", df$sample_type)
-            df$sample_type <- gsub("EtOH_100%", "100% EtOH", df$sample_type)
-            df$sample_type <- gsub("Aceton_100%", "100% Aceton", df$sample_type)
-            df$sample_type <- gsub("EtOH_Acetic Acid_3:1", "EtOH_AA_3:1", df$sample_type)
 
-            x_coord <- c(2, 3, 4, 5, 6, 7)
-            y_coord <- c(200, 300, 400, 500, 600, 700)
+            x_coord <- c(9, 5.1, 7.15, 6.45, 4.15, 0.8)
+            y_coord <- c(750, 565, 295, 85, 155, 70)
             txt_lab <- c("Col-0_snap", "70% EtOH", "100% EtOH", "100% Aceton", "EtOH_AA_3:1", "FAA")
 
         } else if (temp == 56) {
@@ -127,13 +122,13 @@ plotRIN <- function(temp = c("56", "62"), ...) {
         scale_x_continuous(expand = c(0.025, 0), limits = c(0, 10), breaks = c(0, 2, 4, 6, 8, 10)) + 
         scale_y_continuous(expand = c(0.025, 0), limits = c(0, 945), breaks = c(0, 200, 400, 600, 800, 1000)) + 
         scale_color_manual(values = df$Col, breaks = df$Col) + 
-        labs(x = bquote(RIN^e), y = "RNA concentration (ng)") + 
+        labs(x = bquote(RIN^e), y = "Total RNA (ng)") + 
         annotate("text", x = x_coord, y = y_coord, label = txt_lab, colour = df$Col, size = 8) + 
         theme(panel.background = element_blank(), 
             legend.position = "none", 
             axis.ticks.length = unit(0.35, "cm"), 
-            axis.ticks = element_line(colour = "black", size = 1.1), 
-            axis.line = element_line(colour = 'black', size = 1.1), 
+            axis.ticks = element_line(colour = "black", linewidth = 1.1), 
+            axis.line = element_line(colour = 'black', linewidth = 1.1), 
             plot.margin = unit(plot_mar, "cm"), 
             plot.title = element_text(size = 22.0, margin = margin(t = 0, r = 0, b = 9, l = 0), hjust = 0.5),
             axis.title.y = element_text(size = 20, margin = margin(t = 0, r = 0, b = 0, l = 2), 
