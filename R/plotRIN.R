@@ -65,11 +65,11 @@ plotRIN <- function(temp = c("56", "62"), ...) {
 
     plt_df <- do.call(rbind, lapply(repl_lst, function(x) {
 
-        rna_mean <- sum(x[,3])/numb
-        rna_sd <- sd(x[,3])
+        rna_mean <- mean(x[,3], na.rm = TRUE)
+        rna_sd <- sd(x[,3], na.rm = TRUE)
 
-        rin_mean <- sum(x[,4])/numb
-        rin_sd <- sd(x[,4])
+        rin_mean <- mean(x[,4], na.rm = TRUE)
+        rin_sd <- sd(x[,4], na.rm = TRUE)
 
         x_df <- data.frame(sample_type = gsub('.{2}$', '', x[2,2]), RNA_avg = rna_mean, 
                            RNA_sd = rna_sd, RIN_avg = rin_mean, RIN_sd = rin_sd)
@@ -100,15 +100,26 @@ plotRIN <- function(temp = c("56", "62"), ...) {
         if (temp == 62) {
 
             plot_mar <- c(0.8, 0.8, 0.5, 0.5)
-            plt_title <- "GO enrichment global q1"
 
             x_coord <- c(9, 5.1, 7.15, 6.45, 4.15, 0.8)
             y_coord <- c(750, 565, 295, 85, 155, 70)
             txt_lab <- c("Col-0_snap", "70% EtOH", "100% EtOH", "100% Aceton", "EtOH_AA_3:1", "FAA")
+            limx <- c(0, 10)
+            limy <- c(0, 945)
+            breakx <- c(0, 2, 4, 6, 8, 10)
+            breaky <- c(0, 200, 400, 600, 800, 1000)
 
         } else if (temp == 56) {
 
             plot_mar <- c(0.8, 0.8, 0.5, 0.5)
+            x_coord <- c(9, 4.1, 7.8, 7.96, 3.4, 4.0, 8.4, 8)
+            y_coord <- c(1080, 200, 470, 374, 35, 425, 275, 28)
+            txt_lab <- c("Col-0_snap", "70% EtOH", "100% EtOH", "100% Aceton", "EtOH_AA_3:1", "EtOH_70-100", 
+                "EtOH_70AA-100", "MetOH_70AA-100")
+            limx <- c(0, 10)
+            limy <- c(0, 1228)
+            breakx <- c(0, 2, 4, 6, 8, 10)
+            breaky <- c(0, 200, 400, 600, 800, 1000, 1200)
         }
 
         df$sample_type <- factor(df$sample_type)
@@ -119,10 +130,11 @@ plotRIN <- function(temp = c("56", "62"), ...) {
             width = 0.35, linewidth = 1.5, size = 0.5) +  
         geom_errorbarh(aes(xmin = RIN_avg - RIN_sd, xmax = RIN_avg + RIN_sd, colour = Col), 
             height = 62, linewidth = 1.5, size = 0.5) + 
-        scale_x_continuous(expand = c(0.025, 0), limits = c(0, 10), breaks = c(0, 2, 4, 6, 8, 10)) + 
-        scale_y_continuous(expand = c(0.025, 0), limits = c(0, 945), breaks = c(0, 200, 400, 600, 800, 1000)) + 
+        geom_point(aes(colour = Col, fill = Col), size = 14.5, shape = 20) + 
+        scale_x_continuous(expand = c(0.025, 0), limits = limx, breaks = breakx) + 
+        scale_y_continuous(expand = c(0.025, 0), limits = limy, breaks = breaky) + 
         scale_color_manual(values = df$Col, breaks = df$Col) + 
-        labs(x = bquote(RIN^e), y = "Total RNA (ng)") + 
+        labs(x = bquote(RIN^e), y = "RNA concentration (ng/µl)") + 
         annotate("text", x = x_coord, y = y_coord, label = txt_lab, colour = df$Col, size = 8) + 
         theme(panel.background = element_blank(), 
             legend.position = "none", 
