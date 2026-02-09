@@ -101,6 +101,16 @@ plotRIN <- function(temp = c("56", "62"), ...) {
 
 
 
+    # Save plot to file
+    # Show message
+    message("Generate plots...")
+
+    # Create "plot" folder in /out_dir/output
+    if (!dir.exists(file.path(out_dir, "plots")))
+        dir.create(file.path(out_dir, "plots"), recursive = TRUE)
+
+
+
     # Plot data
     plotData <- function(df) {
 
@@ -110,25 +120,25 @@ plotRIN <- function(temp = c("56", "62"), ...) {
 
             plot_mar <- c(0.8, 0.8, 0.5, 0.5)
 
-            x_coord <- c(9, 5.1, 7.15, 6.45, 4.15, 0.8)
+            x_coord <- c(9, 5.0, 7.05, 6.35, 4.15, 1.7)
             y_coord <- c(22.5, 16.95, 8.85, 2.55, 4.65, 2.1)
             txt_lab <- c("Col-0_snap", "70% EtOH", "100% EtOH", "100% Aceton", "EtOH_AA_3:1", "FAA")
-            limx <- c(0, 10)
+            limx <- c(1, 10)
             limy <- c(0, 28.25)
-            breakx <- c(0, 2, 4, 6, 8, 10)
+            breakx <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             breaky <- c(0, 5, 10, 15, 20, 25)
             heb <- 1.4
 
         } else if (temp == 56) {
 
             plot_mar <- c(0.8, 0.8, 0.5, 0.5)
-            x_coord <- c(9, 4.1, 7.8, 7.96, 3.4, 4.0, 8.4, 8)
+            x_coord <- c(9.1, 4.15, 7.7, 7.837, 3.59, 4.1, 8.268, 7.8)
             y_coord <- c(32.4, 6, 14.1, 11.22, 1.05, 12.75, 8.25, 0.84)
             txt_lab <- c("Col-0_snap", "70% EtOH", "100% EtOH", "100% Aceton", "EtOH_AA_3:1", "EtOH_70-100", 
                 "EtOH_70AA-100", "MetOH_70AA-100")
-            limx <- c(0, 10)
+            limx <- c(1, 10)
             limy <- c(0, 36.8)
-            breakx <- c(0, 2, 4, 6, 8, 10)
+            breakx <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             breaky <- c(0, 5, 10, 15, 20, 25, 30, 35)
             heb <- 1.825
         }
@@ -138,9 +148,9 @@ plotRIN <- function(temp = c("56", "62"), ...) {
         p <- ggplot(df, aes(x = RIN_avg, y = RNA_avg)) +
         geom_point(aes(colour = Col, fill = Col), size = 14.5, shape = 20) + 
         geom_errorbar(aes(ymin = RNA_avg - RNA_sd, ymax = RNA_avg + RNA_sd, colour = Col), 
-            width = 0.35, linewidth = 1.5, size = 0.5) +  
+            width = 0.35, linewidth = 1.5) +  
         geom_errorbarh(aes(xmin = RIN_avg - RIN_sd, xmax = RIN_avg + RIN_sd, colour = Col), 
-            height = heb, linewidth = 1.5, size = 0.5) + 
+            height = heb, linewidth = 1.5) + 
         geom_point(aes(colour = Col, fill = Col), size = 14.5, shape = 20) + 
         scale_x_continuous(expand = c(0.025, 0), limits = limx, breaks = breakx) + 
         scale_y_continuous(expand = c(0.025, 0), limits = limy, breaks = breaky) + 
