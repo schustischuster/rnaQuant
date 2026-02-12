@@ -1,20 +1,15 @@
 # rnaQuant
 RNA quantification from tissue sections.
 
-## Contents
 
-* [Getting Started](#getting-started)
-  * [Required Packages](#required-packages)
-  * [Data input](#data-input)
-* [Data analysis and visualization](#data-analysis-and-visualization)
+* [Required Packages](#required-packages)
+* [Data input](#data-input)
+* [Visualize RNA integrity data](#visualize-rna-integrity-data)
 * [Session info](#session-info)
 
 ---
-## Getting started
-
-
 ### Required Packages
-Install and load the following R packages before running the reproducible script:
+Install and load the following R packages before running the reproducible scripts:
 
 ```R
 # Required packages
@@ -30,9 +25,9 @@ if (any(instpack == FALSE)) {
 invisible(lapply(lib_List, library, character.only = TRUE))
 
 ```
-
+---
 ### Data input
-Download and extract the rnaQuant repository to the working directory on your computer. Then, set the path for input and output files and source the R scripts:
+Download and extract the evoGE repository to the working directory on your computer. Then, set the path for input and output files and source the R scripts:
 
 ```R
 in_dir <- file.path("rnaQuant-master", "data")
@@ -51,17 +46,16 @@ sourceDir <- function(path, trace = TRUE, ...) {
 sourceDir(path_to_R_files)
 ```
 ---
-## Data analysis and visualization
+### Visualize RNA integrity data
 
-...Add data description and processing here...
+... describe data processing and visualization here...
 
 
-* `plotRIN.R(temp, ...)`
-
+* `plotRIN(temp, ...)`
 
 | Arguments  |  |
 | :---  | :---  |
-| temp  | Indicates data set. Values can be either "56" or "62". |
+| temp  | Indicates data set. Can be either "56" or "62". |
 
 
 To reproduce the results of this study, execute the following function calls:
@@ -72,4 +66,5 @@ plotRIN(temp = "56")
 
 ```
 
-## Session info
+### Session info
+
