@@ -1,6 +1,7 @@
-# rnaQuant
+## rnaQuant
 RNA quantification from tissue sections.
 
+## Contents
 
 * [Required Packages](#required-packages)
 * [Data input](#data-input)
