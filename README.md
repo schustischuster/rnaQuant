@@ -28,7 +28,7 @@ invisible(lapply(lib_List, library, character.only = TRUE))
 ```
 ---
 ### Data input
-Download and extract the evoGE repository to the working directory on your computer. Then, set the path for input and output files and source the R scripts:
+Download and extract the rnaQuant repository to the working directory on your computer. Then, set the path for input and output files and source the R scripts:
 
 ```R
 in_dir <- file.path("rnaQuant-master", "data")
@@ -56,7 +56,7 @@ sourceDir(path_to_R_files)
 
 | Arguments  |  |
 | :---  | :---  |
-| temp  | Indicates data set. Can be either "56" or "62". |
+| temp  | Indicates data set (embedding temperature). Can be either "56" or "62". |
 
 
 To reproduce the results of this study, execute the following function calls:
